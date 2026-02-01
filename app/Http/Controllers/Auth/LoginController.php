@@ -10,6 +10,9 @@ use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
+    /**
+     * @unauthenticated
+     */
     public function login(Request $request)
     {
         $request->validate([

@@ -10,6 +10,9 @@ use Illuminate\Validation\Rules;
 
 class RegisterController extends Controller
 {
+    /**
+     * @unauthenticated
+     */
     public function register(Request $request)
     {
         $request->validate([
