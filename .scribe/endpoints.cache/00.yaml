@@ -367,14 +367,14 @@ endpoints:
         name: product_id
         description: 'The ID of the product.'
         required: true
-        example: 1
+        example: 2
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      product_id: 1
+      product_id: 2
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -1033,7 +1033,7 @@ endpoints:
         name: status
         description: ''
         required: true
-        example: delivered
+        example: completed
         type: string
         enumValues:
           - delivered
@@ -1042,7 +1042,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      status: delivered
+      status: completed
     fileParameters: []
     responses: []
     responseFields: []
@@ -1158,7 +1158,7 @@ endpoints:
       deprecated: false
     headers:
       Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
+      Content-Type: multipart/form-data
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
@@ -1168,77 +1168,77 @@ endpoints:
       name:
         custom: []
         name: name
-        description: 'Must not be greater than 255 characters.'
+        description: 'The name of the product.'
         required: true
-        example: b
+        example: 'Nasi Goreng'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       description:
         custom: []
         name: description
-        description: ''
+        description: 'The description of the product.'
         required: false
-        example: 'Eius et animi quos velit et.'
+        example: 'Tasty fried rice.'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       price:
         custom: []
         name: price
-        description: 'Must be at least 0.'
+        description: 'The price of the product.'
         required: true
-        example: 60
+        example: 15000.0
         type: number
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       stock:
         custom: []
         name: stock
-        description: 'Must be at least 0.'
+        description: 'The stock of the product.'
         required: true
-        example: 42
+        example: 50
         type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       category:
         custom: []
         name: category
-        description: 'Must not be greater than 100 characters.'
+        description: 'The category of the product.'
         required: false
-        example: l
+        example: Food
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       image_url:
         custom: []
         name: image_url
-        description: 'Must be a valid URL.'
+        description: 'The product image.'
         required: false
-        example: 'http://www.dickens.com/deserunt-aut-ab-provident-perspiciatis-quo-omnis-nostrum'
-        type: string
+        example: null
+        type: file
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      name: b
-      description: 'Eius et animi quos velit et.'
-      price: 60
-      stock: 42
-      category: l
-      image_url: 'http://www.dickens.com/deserunt-aut-ab-provident-perspiciatis-quo-omnis-nostrum'
-    fileParameters: []
+      name: 'Nasi Goreng'
+      description: 'Tasty fried rice.'
+      price: 15000.0
+      stock: 50
+      category: Food
+    fileParameters:
+      image_url: null
     responses: []
     responseFields: []
     auth:
@@ -1265,7 +1265,7 @@ endpoints:
       deprecated: false
     headers:
       Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
+      Content-Type: multipart/form-data
       Accept: application/json
     urlParameters:
       product_id:
@@ -1273,23 +1273,23 @@ endpoints:
         name: product_id
         description: 'The ID of the product.'
         required: true
-        example: 1
+        example: 2
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      product_id: 1
+      product_id: 2
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
       name:
         custom: []
         name: name
-        description: 'Must not be greater than 255 characters.'
+        description: 'The name of the product.'
         required: false
-        example: b
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1298,7 +1298,7 @@ endpoints:
       description:
         custom: []
         name: description
-        description: ''
+        description: 'The description of the product.'
         required: false
         example: 'Eius et animi quos velit et.'
         type: string
@@ -1309,9 +1309,9 @@ endpoints:
       price:
         custom: []
         name: price
-        description: 'Must be at least 0.'
+        description: 'The price of the product.'
         required: false
-        example: 60
+        example: 4326.41688
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -1320,9 +1320,9 @@ endpoints:
       stock:
         custom: []
         name: stock
-        description: 'Must be at least 0.'
+        description: 'The stock of the product.'
         required: false
-        example: 42
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -1331,9 +1331,9 @@ endpoints:
       category:
         custom: []
         name: category
-        description: 'Must not be greater than 100 characters.'
+        description: 'The category of the product.'
         required: false
-        example: l
+        example: architecto
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1342,22 +1342,22 @@ endpoints:
       image_url:
         custom: []
         name: image_url
-        description: 'Must be a valid URL.'
+        description: 'The product image.'
         required: false
-        example: 'http://www.dickens.com/deserunt-aut-ab-provident-perspiciatis-quo-omnis-nostrum'
-        type: string
+        example: null
+        type: file
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      name: b
+      name: architecto
       description: 'Eius et animi quos velit et.'
-      price: 60
-      stock: 42
-      category: l
-      image_url: 'http://www.dickens.com/deserunt-aut-ab-provident-perspiciatis-quo-omnis-nostrum'
-    fileParameters: []
+      price: 4326.41688
+      stock: 16
+      category: architecto
+    fileParameters:
+      image_url: null
     responses: []
     responseFields: []
     auth:
@@ -1392,14 +1392,14 @@ endpoints:
         name: product_id
         description: 'The ID of the product.'
         required: true
-        example: 1
+        example: 2
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      product_id: 1
+      product_id: 2
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []

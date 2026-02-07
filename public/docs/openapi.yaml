@@ -197,7 +197,7 @@ paths:
         in: path
         name: product_id
         description: 'The ID of the product.'
-        example: 1
+        example: 2
         required: true
         schema:
           type: integer
@@ -482,7 +482,7 @@ paths:
                 status:
                   type: string
                   description: ''
-                  example: delivered
+                  example: completed
                   enum:
                     - delivered
                     - completed
@@ -551,36 +551,36 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               properties:
                 name:
                   type: string
-                  description: 'Must not be greater than 255 characters.'
-                  example: b
+                  description: 'The name of the product.'
+                  example: 'Nasi Goreng'
                 description:
                   type: string
-                  description: ''
-                  example: 'Eius et animi quos velit et.'
+                  description: 'The description of the product.'
+                  example: 'Tasty fried rice.'
                   nullable: true
                 price:
                   type: number
-                  description: 'Must be at least 0.'
-                  example: 60
+                  description: 'The price of the product.'
+                  example: 15000.0
                 stock:
                   type: integer
-                  description: 'Must be at least 0.'
-                  example: 42
+                  description: 'The stock of the product.'
+                  example: 50
                 category:
                   type: string
-                  description: 'Must not be greater than 100 characters.'
-                  example: l
+                  description: 'The category of the product.'
+                  example: Food
                   nullable: true
                 image_url:
                   type: string
-                  description: 'Must be a valid URL.'
-                  example: 'http://www.dickens.com/deserunt-aut-ab-provident-perspiciatis-quo-omnis-nostrum'
+                  format: binary
+                  description: 'The product image.'
                   nullable: true
               required:
                 - name
@@ -598,36 +598,36 @@ paths:
       requestBody:
         required: false
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               properties:
                 name:
                   type: string
-                  description: 'Must not be greater than 255 characters.'
-                  example: b
+                  description: 'The name of the product.'
+                  example: architecto
                 description:
                   type: string
-                  description: ''
+                  description: 'The description of the product.'
                   example: 'Eius et animi quos velit et.'
                   nullable: true
                 price:
                   type: number
-                  description: 'Must be at least 0.'
-                  example: 60
+                  description: 'The price of the product.'
+                  example: 4326.41688
                 stock:
                   type: integer
-                  description: 'Must be at least 0.'
-                  example: 42
+                  description: 'The stock of the product.'
+                  example: 16
                 category:
                   type: string
-                  description: 'Must not be greater than 100 characters.'
-                  example: l
+                  description: 'The category of the product.'
+                  example: architecto
                   nullable: true
                 image_url:
                   type: string
-                  description: 'Must be a valid URL.'
-                  example: 'http://www.dickens.com/deserunt-aut-ab-provident-perspiciatis-quo-omnis-nostrum'
+                  format: binary
+                  description: 'The product image.'
                   nullable: true
     delete:
       summary: ''
@@ -642,7 +642,7 @@ paths:
         in: path
         name: product_id
         description: 'The ID of the product.'
-        example: 1
+        example: 2
         required: true
         schema:
           type: integer

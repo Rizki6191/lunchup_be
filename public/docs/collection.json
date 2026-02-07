@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Laravel API Documentation",
-        "_postman_id": "2b6fbe29-657b-4f6c-829b-d55d01960520",
+        "_postman_id": "84287b30-7aee-4c92-b496-518d1b563489",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -236,7 +236,7 @@
                                 {
                                     "id": "product_id",
                                     "key": "product_id",
-                                    "value": "1",
+                                    "value": "2",
                                     "description": "The ID of the product."
                                 }
                             ]
@@ -776,7 +776,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"status\":\"delivered\"}"
+                            "raw": "{\"status\":\"completed\"}"
                         },
                         "description": ""
                     },
@@ -885,7 +885,7 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "multipart\/form-data"
                             },
                             {
                                 "key": "Accept",
@@ -893,8 +893,44 @@
                             }
                         ],
                         "body": {
-                            "mode": "raw",
-                            "raw": "{\"name\":\"b\",\"description\":\"Eius et animi quos velit et.\",\"price\":60,\"stock\":42,\"category\":\"l\",\"image_url\":\"http:\\\/\\\/www.dickens.com\\\/deserunt-aut-ab-provident-perspiciatis-quo-omnis-nostrum\"}"
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "Nasi Goreng",
+                                    "type": "text",
+                                    "description": "The name of the product."
+                                },
+                                {
+                                    "key": "description",
+                                    "value": "Tasty fried rice.",
+                                    "type": "text",
+                                    "description": "The description of the product."
+                                },
+                                {
+                                    "key": "price",
+                                    "value": "15000",
+                                    "type": "text",
+                                    "description": "The price of the product."
+                                },
+                                {
+                                    "key": "stock",
+                                    "value": "50",
+                                    "type": "text",
+                                    "description": "The stock of the product."
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "Food",
+                                    "type": "text",
+                                    "description": "The category of the product."
+                                },
+                                {
+                                    "key": "image_url",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
                         },
                         "description": ""
                     },
@@ -912,16 +948,16 @@
                                 {
                                     "id": "product_id",
                                     "key": "product_id",
-                                    "value": "1",
+                                    "value": "2",
                                     "description": "The ID of the product."
                                 }
                             ]
                         },
-                        "method": "PUT",
+                        "method": "POST",
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "multipart\/form-data"
                             },
                             {
                                 "key": "Accept",
@@ -929,8 +965,49 @@
                             }
                         ],
                         "body": {
-                            "mode": "raw",
-                            "raw": "{\"name\":\"b\",\"description\":\"Eius et animi quos velit et.\",\"price\":60,\"stock\":42,\"category\":\"l\",\"image_url\":\"http:\\\/\\\/www.dickens.com\\\/deserunt-aut-ab-provident-perspiciatis-quo-omnis-nostrum\"}"
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "architecto",
+                                    "type": "text",
+                                    "description": "The name of the product."
+                                },
+                                {
+                                    "key": "description",
+                                    "value": "Eius et animi quos velit et.",
+                                    "type": "text",
+                                    "description": "The description of the product."
+                                },
+                                {
+                                    "key": "price",
+                                    "value": "4326.41688",
+                                    "type": "text",
+                                    "description": "The price of the product."
+                                },
+                                {
+                                    "key": "stock",
+                                    "value": "16",
+                                    "type": "text",
+                                    "description": "The stock of the product."
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "architecto",
+                                    "type": "text",
+                                    "description": "The category of the product."
+                                },
+                                {
+                                    "key": "image_url",
+                                    "src": [],
+                                    "type": "file"
+                                },
+                                {
+                                    "key": "_method",
+                                    "value": "PUT",
+                                    "type": "text"
+                                }
+                            ]
                         },
                         "description": ""
                     },
@@ -948,7 +1025,7 @@
                                 {
                                     "id": "product_id",
                                     "key": "product_id",
-                                    "value": "1",
+                                    "value": "2",
                                     "description": "The ID of the product."
                                 }
                             ]
