@@ -13,14 +13,14 @@ class AdminController extends Controller
     {
         $totalProducts = Product::count();
         
-        $orderStats = Order::selectRaw('
+        $orderStats = Order::selectRaw("
             COUNT(*) as total_orders,
-            SUM(CASE WHEN status = "pending" THEN 1 ELSE 0 END) as pending_orders,
-            SUM(CASE WHEN status = "completed" THEN 1 ELSE 0 END) as completed_orders,
-            SUM(CASE WHEN status = "completed" THEN total_amount ELSE 0 END) as total_revenue,
-            SUM(CASE WHEN status = "completed" THEN jastiper_commission ELSE 0 END) as total_commission,
-            SUM(CASE WHEN status = "completed" THEN total_amount - jastiper_commission ELSE 0 END) as net_revenue
-        ')->first();
+            SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending_orders,
+            SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completed_orders,
+            SUM(CASE WHEN status = 'completed' THEN total_amount ELSE 0 END) as total_revenue,
+            SUM(CASE WHEN status = 'completed' THEN jastiper_commission ELSE 0 END) as total_commission,
+            SUM(CASE WHEN status = 'completed' THEN total_amount - jastiper_commission ELSE 0 END) as net_revenue
+        ")->first();
         
         $recentOrders = Order::with(['user:id,username', 'jastiper:id,username'])
                             ->orderBy('created_at', 'desc')
