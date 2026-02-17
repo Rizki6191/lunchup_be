@@ -16,10 +16,10 @@ class OrderController extends Controller
     public function userOrders(Request $request)
     {
         $orders = Order::with(['items.product', 'jastiper:id,username'])
-                      ->where('user_id', $request->user()->id)
-                      ->orderBy('created_at', 'desc')
-                      ->paginate(10);
-        
+            ->where('user_id', $request->user()->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
         return response()->json([
             'success' => true,
             'data' => $orders,
@@ -43,11 +43,11 @@ class OrderController extends Controller
         }
 
         $user = $request->user();
-        
+
         $cartItems = Cart::with('product')
-                        ->where('user_id', $user->id)
-                        ->get();
-        
+            ->where('user_id', $user->id)
+            ->get();
+
         if ($cartItems->isEmpty()) {
             return response()->json([
                 'success' => false,
@@ -76,10 +76,10 @@ class OrderController extends Controller
             ]);
 
             $totalAmount = 0;
-            
+
             foreach ($cartItems as $cartItem) {
                 $subtotal = $cartItem->product->price * $cartItem->quantity;
-                
+
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $cartItem->product_id,
@@ -87,25 +87,25 @@ class OrderController extends Controller
                     'price_at_time' => $cartItem->product->price,
                     'subtotal' => $subtotal,
                 ]);
-                
+
                 $totalAmount += $subtotal;
                 $cartItem->product->decrement('stock', $cartItem->quantity);
             }
-            
+
             $order->update(['total_amount' => $totalAmount]);
             Cart::where('user_id', $user->id)->delete();
-            
+
             DB::commit();
-            
+
             return response()->json([
                 'success' => true,
                 'data' => $order->load('items.product'),
                 'message' => 'Order created successfully'
             ], 201);
-            
+
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to create order: ' . $e->getMessage()
@@ -116,10 +116,12 @@ class OrderController extends Controller
     public function show(Request $request, Order $order)
     {
         $user = $request->user();
-        
-        if ($order->user_id !== $user->id && 
-            $order->jastiper_id !== $user->id && 
-            $user->role !== 'admin') {
+
+        if (
+            $order->user_id !== $user->id &&
+            $order->jastiper_id !== $user->id &&
+            $user->role !== 'admin'
+        ) {
             return response()->json([
                 'success' => false,
                 'message' => 'Unauthorized'
@@ -137,11 +139,11 @@ class OrderController extends Controller
 
     public function availableOrders(Request $request)
     {
-        $orders = Order::with(['user:id,username', 'items.product:id,name'])
-                      ->where('status', 'pending')
-                      ->orderBy('created_at', 'desc')
-                      ->paginate(10);
-        
+        $orders = Order::with(['user:id,username', 'items.product'])
+            ->where('status', 'pending')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
         return response()->json([
             'success' => true,
             'data' => [
@@ -189,7 +191,7 @@ class OrderController extends Controller
         }
 
         $user = $request->user();
-        
+
         if ($order->jastiper_id !== $user->id) {
             return response()->json([
                 'success' => false,
@@ -200,45 +202,45 @@ class OrderController extends Controller
         DB::beginTransaction();
         try {
             $newStatus = $request->status;
-            
+
             if ($newStatus === 'delivered') {
                 $order->update([
                     'status' => 'delivered',
                     'delivered_at' => now()
                 ]);
-                
+
                 $message = 'Order marked as delivered';
-                
+
             } elseif ($newStatus === 'completed') {
                 $commission = $order->total_amount * 0.10;
-                
+
                 $order->update([
                     'status' => 'completed',
                     'jastiper_commission' => $commission,
                     'completed_at' => now()
                 ]);
-                
+
                 DeliveryHistory::create([
                     'jastiper_id' => $user->id,
                     'order_id' => $order->id,
                     'commission' => $commission,
                     'delivered_at' => now()
                 ]);
-                
+
                 $message = 'Order completed. Komisi: Rp ' . number_format($commission);
             }
-            
+
             DB::commit();
-            
+
             return response()->json([
                 'success' => true,
                 'data' => $order,
                 'message' => $message
             ]);
-            
+
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to update order status: ' . $e->getMessage()
@@ -249,11 +251,11 @@ class OrderController extends Controller
     public function activeDeliveries(Request $request)
     {
         $orders = Order::with(['user:id,username'])
-                      ->where('jastiper_id', $request->user()->id)
-                      ->whereIn('status', ['accepted', 'delivered'])
-                      ->orderBy('accepted_at', 'desc')
-                      ->paginate(10);
-        
+            ->where('jastiper_id', $request->user()->id)
+            ->whereIn('status', ['accepted', 'delivered'])
+            ->orderBy('accepted_at', 'desc')
+            ->paginate(10);
+
         return response()->json([
             'success' => true,
             'data' => $orders,
@@ -264,15 +266,15 @@ class OrderController extends Controller
     public function deliveryHistory(Request $request)
     {
         $orders = Order::with(['user:id,username'])
-                      ->where('jastiper_id', $request->user()->id)
-                      ->where('status', 'completed')
-                      ->orderBy('completed_at', 'desc')
-                      ->paginate(10);
-        
+            ->where('jastiper_id', $request->user()->id)
+            ->where('status', 'completed')
+            ->orderBy('completed_at', 'desc')
+            ->paginate(10);
+
         $totalEarnings = Order::where('jastiper_id', $request->user()->id)
-                             ->where('status', 'completed')
-                             ->sum('jastiper_commission');
-        
+            ->where('status', 'completed')
+            ->sum('jastiper_commission');
+
         return response()->json([
             'success' => true,
             'data' => [

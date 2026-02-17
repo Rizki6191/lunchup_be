@@ -30,23 +30,23 @@ Route::prefix('auth')->group(function () {
 
 // Protected routes (require authentication)
 Route::middleware('auth:sanctum')->group(function () {
-    
+
     // Auth routes
     Route::prefix('auth')->group(function () {
         Route::post('/logout', [LoginController::class, 'logout']);
         // Route::get('/me', [LoginController::class, 'me']);
     });
-    
+
     // Profile routes - semua role bisa akses
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::put('/profile', [ProfileController::class, 'update']);
-    
+
     // Products routes
     // GET routes - semua role bisa akses
     Route::get('/products', [ProductController::class, 'index']);
     Route::get('/products/{product}', [ProductController::class, 'show']);
     Route::get('/products/category/{category}', [ProductController::class, 'byCategory']);
-    
+
     // Cart routes - hanya user & admin (admin mungkin mau test)
     Route::middleware('role:user,admin')->prefix('cart')->group(function () {
         Route::get('/', [CartController::class, 'index']);
@@ -55,14 +55,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{cart}', [CartController::class, 'destroy']);
         Route::delete('/', [CartController::class, 'clear']); // Clear all cart items
     });
-    
+
     // Order routes untuk user
     Route::middleware('role:user,admin')->prefix('orders')->group(function () {
         Route::get('/my-orders', [OrderController::class, 'userOrders']); // User orders history
         Route::post('/checkout', [OrderController::class, 'checkout']); // Checkout cart
         Route::get('/{order}', [OrderController::class, 'show']); // Order detail
     });
-    
+
     // Jastiper routes
     Route::middleware('role:jastiper')->prefix('jastiper')->group(function () {
         // Orders management
@@ -70,33 +70,33 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/orders/active', [OrderController::class, 'activeDeliveries']); // Active deliveries
         Route::post('/orders/{order}/accept', [OrderController::class, 'acceptOrder']); // Accept order
         Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus']); // Update status
-        
+
         // Dashboard & earnings
         Route::get('/earnings', [JastiperController::class, 'earnings']); // Earnings summary
         Route::get('/delivery-history', [JastiperController::class, 'deliveryHistory']); // Delivery history
     });
-    
+
     // Admin routes
     Route::middleware('role:admin')->prefix('admin')->group(function () {
         // Products CRUD
         Route::post('/products', [ProductController::class, 'store']);
         Route::put('/products/{product}', [ProductController::class, 'update']);
         Route::delete('/products/{product}', [ProductController::class, 'destroy']);
-        
+
         // Dashboard
         Route::get('/dashboard', [AdminController::class, 'dashboard']);
-        
+
         // Orders management
         Route::get('/orders', [AdminController::class, 'allOrders']);
         Route::get('/orders/{order}', [AdminController::class, 'orderDetail']);
         Route::put('/orders/{order}/status', [AdminController::class, 'updateOrderStatus']);
     });
-    
+
     // Route untuk semua role yang sudah login (contoh dashboard sederhana)
     Route::get('/dashboard', function (Request $request) {
         $user = $request->user();
         $role = $user->role;
-        
+
         $dashboard = [
             'user' => [
                 'id' => $user->id,
@@ -104,7 +104,7 @@ Route::middleware('auth:sanctum')->group(function () {
                 'role' => $role,
             ]
         ];
-        
+
         // Tambahkan data berdasarkan role
         if ($role === 'user') {
             $dashboard['cart_count'] = $user->carts()->count();
@@ -116,6 +116,9 @@ Route::middleware('auth:sanctum')->group(function () {
                 ->whereIn('status', ['accepted', 'delivered'])
                 ->count();
             $dashboard['total_earnings'] = $user->deliveryHistories()->sum('commission');
+            $dashboard['total_completed_amount'] = $user->jastiperOrders()
+                ->where('status', 'completed')
+                ->sum('total_amount');
             $dashboard['message'] = 'Jastiper Dashboard';
         } elseif ($role === 'admin') {
             $dashboard['total_products'] = \App\Models\Product::count();
@@ -123,7 +126,7 @@ Route::middleware('auth:sanctum')->group(function () {
             $dashboard['pending_orders'] = \App\Models\Order::where('status', 'pending')->count();
             $dashboard['message'] = 'Admin Dashboard';
         }
-        
+
         return response()->json([
             'success' => true,
             'data' => $dashboard,
